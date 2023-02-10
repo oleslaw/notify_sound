@@ -1,6 +1,8 @@
 # Notification Monitor
 
-This script monitors a specified app for notifications and plays a sound file when a notification is received.
+This script monitors notifications from a specified app or from all apps and plays a sound file when a notification is received.
+
+> :warning: This script has been only tested on Ubuntu 22.04.
 
 ## Usage
 
