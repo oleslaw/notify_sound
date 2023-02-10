@@ -1,0 +1,71 @@
+#!/bin/bash
+
+# default sound file
+sound_file="/usr/share/sounds/freedesktop/stereo/message.oga"
+
+# parse options
+options=$(getopt -o hs: --long help,sound:,app:, -- "$@")
+
+if [ $? -ne 0 ]; then
+    echo "Usage: $0 [OPTIONS]"
+    exit 1
+fi
+
+eval set -- "$options"
+
+while true; do
+    case "$1" in
+        -h|--help)
+            cat << EOF
+Usage: $0 [OPTIONS]
+
+Monitors applications for notifications and plays a sound file when a notification is received.
+
+Options:
+  -h, --help    Display this help message and exit.
+  -s, --sound   Specify a different sound file to play when a notification is received.
+  -a, --app     Specify the name of the application to monitor for notifications. If not specified, notifications from all applications will be monitored.
+
+Examples:
+  $0
+  $0 --app "Microsoft Edge"
+  $0 --sound /path/to/custom/sound.ogg
+EOF
+            exit 0
+            ;;
+        -s|--sound)
+            sound_file="$2"
+            shift 2
+            ;;
+        -a|--app)
+            app_name="$2"
+            shift 2
+            ;;
+        --)
+            shift
+            break
+            ;;
+        *)
+            echo "Error: Invalid option: $1"
+            exit 1
+            ;;
+    esac
+done
+
+if [ ! -f "$sound_file" ]; then
+    echo "Error: Sound file not found: $sound_file"
+    exit 1
+fi
+
+while true; do
+    if [ -z "$app_name" ]; then
+        dbus-monitor --session "interface='org.freedesktop.Notifications'" | grep --quiet "member=Notify"
+    else
+        dbus-monitor --session "interface='org.freedesktop.Notifications',member='Notify',arg0='$app_name'" | grep --quiet "member=Notify"
+    fi
+
+    if [ $? -eq 0 ]; then
+        paplay "$sound_file" &
+    fi
+    sleep 1
+done

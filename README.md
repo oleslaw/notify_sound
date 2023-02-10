@@ -5,18 +5,20 @@ This script monitors a specified app for notifications and plays a sound file wh
 ## Usage
 
 ```bash
-./notify_monitor.sh [OPTIONS] APP_NAME
+./notify_monitor [OPTIONS]
 ```
 
 Options:
   * `-h, --help`: Display the help message and exit.
   * `-s, --sound`: Specify a different sound file to play when a notification is received.
+  * `-a, --app`: Specify the name of the application to monitor for notifications. If not specified, notifications from all applications will be monitored.
 
 ## Examples
 
 ```bash
-./notify_monitor.sh firefox
-./notify_monitor.sh -s /path/to/custom/sound.ogg firefox
+./notify_monitor --app "Microsoft Edge"
+./notify_monitor --sound /path/to/custom/sound.ogg
+./notify_monitor -s /path/to/custom/sound.ogg -a firefox
 ```
 
 ## Running as a Background Process
@@ -24,10 +26,10 @@ Options:
 To run the script as a background process in Linux, you can use the `nohup` command followed by `&` to run the script in the background. The `nohup` command allows the script to continue running even after the terminal is closed. The `&` symbol causes the script to run in the background and return control to the terminal immediately.
 
 ```bash
-nohup ./notify_monitor.sh APP_NAME &
+nohup ./notify_monitor -a APP_NAME &
 ```
 
 
 ## Default Sound File
 
-The default sound file is `/usr/share/sounds/freedesktop/stereo/message-new-instant.oga`. If a different sound file is not specified using the `-s` option, this file will be used.
+The default sound file is `/usr/share/sounds/freedesktop/stereo/message.oga`. If a different sound file is not specified using the `-s` option, this file will be used.
