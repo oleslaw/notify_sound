@@ -28,7 +28,7 @@ Options:
 To run the script as a background process in Linux, you can use the `nohup` command followed by `&` to run the script in the background. The `nohup` command allows the script to continue running even after the terminal is closed. The `&` symbol causes the script to run in the background and return control to the terminal immediately.
 
 ```bash
-nohup ./notify_monitor -a APP_NAME &
+nohup ./notify_monitor &
 ```
 
 
