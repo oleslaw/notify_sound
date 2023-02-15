@@ -1,8 +1,8 @@
 # Notification Monitor
 
-This script monitors notifications from a specified app or from all apps and plays a sound file when a notification is received.
+Monitors notifications from a specified app or from all apps and plays a sound file when a notification is received.
 
-> :warning: This script has been only tested on Ubuntu 22.04.
+> :warning: Has only been tested on Ubuntu 22.04.
 
 ## Usage
 
@@ -25,7 +25,7 @@ Options:
 
 ## Running as a Background Process
 
-To run the script as a background process in Linux, you can use the `nohup` command followed by `&` to run the script in the background. The `nohup` command allows the script to continue running even after the terminal is closed. The `&` symbol causes the script to run in the background and return control to the terminal immediately.
+To run the script as a background process in Ubuntu, you can use the `nohup` command followed by `&`. The `nohup` command allows the script to continue running even after the terminal is closed. The `&` symbol causes the script to run in the background and return control to the terminal immediately.
 
 ```bash
 nohup ./notify_monitor &
