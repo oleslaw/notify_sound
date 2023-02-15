@@ -1,13 +1,13 @@
-# Notification Monitor
+# Notification Sound
 
-Monitors notifications from a specified app or from all apps and plays a sound file when a notification is received.
+This script monitors notifications from a specified application or from all applications and plays a sound file when a notification is received. It is particularly useful for web applications that send notifications but do not play any sounds, such as Microsoft Teams.
 
-> :warning: Has only been tested on Ubuntu 22.04.
+> :warning: Note that it has only been tested on Ubuntu 22.04.
 
 ## Usage
 
 ```bash
-./notify_monitor [OPTIONS]
+./notify_sound [OPTIONS]
 ```
 
 Options:
@@ -18,20 +18,23 @@ Options:
 ## Examples
 
 ```bash
-./notify_monitor --app "Microsoft Edge"
-./notify_monitor --sound /path/to/custom/sound.ogg
-./notify_monitor -s /path/to/custom/sound.ogg -a firefox
+./notify_sound --app "Microsoft Edge"
+./notify_sound --sound /path/to/custom/sound.ogg
+./notify_sound -s /path/to/custom/sound.ogg -a firefox
 ```
+
+If you are using this script with applications that embed a browser engine, such as Outlook or Teams, use the name of a browser in the --app parameter (for example, "Microsoft Edge" for Teams/Outlook).
 
 ## Running as a Background Process
 
 To run the script as a background process in Ubuntu, you can use the `nohup` command followed by `&`. The `nohup` command allows the script to continue running even after the terminal is closed. The `&` symbol causes the script to run in the background and return control to the terminal immediately.
 
 ```bash
-nohup ./notify_monitor &
+nohup ./notify_sound &
 ```
 
 
 ## Default Sound File
 
-The default sound file is `/usr/share/sounds/freedesktop/stereo/message.oga`. If a different sound file is not specified using the `-s` option, this file will be used.
+If a different sound file is not specified using the `-s` option,
+the default file that will be used is `/usr/share/sounds/freedesktop/stereo/message.oga`.
