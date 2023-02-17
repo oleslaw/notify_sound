@@ -3,20 +3,10 @@
 # default sound file
 sound_file="/usr/share/sounds/freedesktop/stereo/message.oga"
 
-# parse options
-options=$(getopt -o hs: --long help,sound:,app:, -- "$@")
-
-if [ $? -ne 0 ]; then
-    echo "Usage: $0 [OPTIONS]"
-    exit 1
-fi
-
-eval set -- "$options"
-
-while true; do
+while [[ $# -gt 0 ]]; do
     case "$1" in
-        -h|--help)
-            cat << EOF
+    -h | --help)
+        cat <<EOF
 Usage: $0 [OPTIONS]
 
 Monitors applications for notifications and plays a sound file when a notification is received.
@@ -31,24 +21,20 @@ Examples:
   $0 --app "Microsoft Edge"
   $0 --sound /path/to/custom/sound.ogg
 EOF
-            exit 0
-            ;;
-        -s|--sound)
-            sound_file="$2"
-            shift 2
-            ;;
-        -a|--app)
-            app_name="$2"
-            shift 2
-            ;;
-        --)
-            shift
-            break
-            ;;
-        *)
-            echo "Error: Invalid option: $1"
-            exit 1
-            ;;
+        exit 0
+        ;;
+    -s | --sound)
+        sound_file="$2"
+        shift 2
+        ;;
+    -a | --app)
+        app_name="$2"
+        shift 2
+        ;;
+    *)
+        echo "Error: Invalid option: $1"
+        exit 1
+        ;;
     esac
 done
 
@@ -59,13 +45,14 @@ fi
 
 while true; do
     if [ -z "$app_name" ]; then
-        dbus-monitor --session "interface='org.freedesktop.Notifications'" | grep --quiet "member=Notify"
+        if dbus-monitor --session "interface='org.freedesktop.Notifications'" | grep --quiet "member=Notify"; then
+            paplay "$sound_file" &
+        fi
     else
-        dbus-monitor --session "interface='org.freedesktop.Notifications',member='Notify',arg0='$app_name'" | grep --quiet "member=Notify"
+        if dbus-monitor --session "interface='org.freedesktop.Notifications',member='Notify',arg0='$app_name'" | grep --quiet "member=Notify"; then
+            paplay "$sound_file" &
+        fi
     fi
 
-    if [ $? -eq 0 ]; then
-        paplay "$sound_file" &
-    fi
     sleep 1
 done
